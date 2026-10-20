@@ -87,6 +87,15 @@ SERVERS = {
         ],
         "env": {},
     },
+    "vllm-qwen3": {
+        "model": QWEN3,
+        "backend": "vllm",
+        "cmd": [
+            "/opt/vllm/bin/vllm", "serve", QWEN3,
+            "--max-model-len", str(CONTEXT_LEN),
+        ],
+        "env": {},
+    },
 }
 
 # (name, bench_serving args)
@@ -260,14 +269,15 @@ def _report(results: dict) -> str:
                     f"| {m['median_tpot_ms']:.2f} | {m['median_itl_ms']:.2f} |"
                 )
 
-    ref = servers.get("sglang-qwen3", {}).get("parity")
-    if ref:
-        lines += ["", f"Greedy parity vs sglang-qwen3 ({len(ref)} prompts, "
-                      f"{PARITY_MAX_TOKENS} tokens):"]
-        for name, s in servers.items():
-            if name != "sglang-qwen3":
-                same = sum(a == b for a, b in zip(s["parity"], ref))
-                lines.append(f"- {name}: {same}/{len(ref)} identical")
+    # Orthrus keeps the Qwen3 backbone bit-for-bit, so on the same engine its
+    # greedy output should match base Qwen3 exactly.
+    for name, s in servers.items():
+        ref_name = name.replace("-orthrus", "-qwen3")
+        ref = servers.get(ref_name, {}).get("parity")
+        if name.endswith("-orthrus") and ref:
+            same = sum(a == b for a, b in zip(s["parity"], ref))
+            lines.append(f"- greedy parity {name} vs {ref_name}: {same}/{len(ref)} "
+                         f"identical ({PARITY_MAX_TOKENS} tokens)")
 
     for name, s in results["servers"].items():
         if "error" in s:

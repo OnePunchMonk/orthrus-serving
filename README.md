@@ -31,7 +31,22 @@ Diffusion-mode self-speculative decoding (Orthrus's actual headline feature — 
 
 ## Verification status
 
-The autoregressive-path code in this repository is a direct port of what was validated end-to-end on real GPUs (A10G and A100-80GB) in the [#44792 PR thread](https://github.com/vllm-project/vllm/pull/44792) — see that thread for full setup/reproduction logs. It has **not** been re-run against a live vLLM install in the process of packaging it as this plugin (that requires a CUDA GPU and a full vLLM install, not available in the packaging environment) — before relying on this for anything beyond experimentation, run the smoke test below yourself and open an issue if something doesn't match the original PR's behavior.
+The vLLM autoregressive path is a port of what was validated end-to-end on real GPUs (A10G and A100-80GB) in the [#44792 PR thread](https://github.com/vllm-project/vllm/pull/44792). Both the vLLM plugin (vllm 0.31.0) and the SGLang package (sglang 0.5.21) have since been served end-to-end on an A10G with `chiennv/Orthrus-Qwen3-1.7B`; see [Benchmark](#benchmark). Larger checkpoints and multi-GPU setups have not been tested.
+
+## Status: work in progress [incomplete]
+
+This project is paused. Done and open items:
+
+- [x] vLLM plugin: autoregressive serving
+- [x] SGLang external model package: autoregressive serving, diffusion weights not loaded
+- [x] Serving benchmark on A10G: SGLang vs vLLM vs base Qwen3 (1.7B)
+- [x] SGLang greedy parity with base Qwen3: 8/8 identical
+- [ ] Confirm vLLM greedy parity against vLLM + plain Qwen3 (currently 6/8 vs the SGLang reference; `vllm-qwen3` is in `benchmarks/modal_bench.py` but the run was aborted)
+- [ ] vLLM plugin: skip allocating the `*_diff` weights when serving AR-only (3.87 vs 3.28 GiB of weights today)
+- [ ] Benchmark the 4B / 8B checkpoints and tensor parallelism
+- [ ] Compare KV cache capacity at an equal memory fraction across engines
+- [ ] Diffusion-mode decoding on SGLang via `SpeculativeAlgorithm.register` (see [`docs/DIFFUSION_MODE.md`](docs/DIFFUSION_MODE.md))
+- [ ] Diffusion-mode decoding on vLLM (blocked on an upstream drafter extension point)
 
 ## Install
 
