@@ -1,6 +1,11 @@
-# orthrus-vllm
+# orthrus-serving
 
-A vLLM **out-of-tree plugin** that adds native `chiennv/Orthrus-*` checkpoint support to vLLM, with `trust_remote_code=False` — no vLLM fork, no monkeypatching, installed the same way any other vLLM model plugin is.
+Native serving support for `chiennv/Orthrus-*` checkpoints in **vLLM** and **SGLang**, with no remote code, no engine fork and no monkeypatching:
+
+- `src/orthrus_vllm`: a vLLM **out-of-tree plugin**, installed the same way any other vLLM model plugin is.
+- `src/orthrus_sglang`: an SGLang **external model package**, loaded via `SGLANG_EXTERNAL_MODEL_PACKAGE` (see [SGLang](#sglang)).
+
+Formerly `orthrus-vllm`; the old GitHub URL redirects here.
 
 This exists because the equivalent in-tree vLLM PRs were closed (linked below). See [Why this is a plugin, not a vLLM PR](#why-this-is-a-plugin-not-a-vllm-pr) for the PR history and why an OOT plugin is vLLM's own documented path for this situation.
 
@@ -46,6 +51,42 @@ llm = LLM(model="chiennv/Orthrus-Qwen3-1.7B", trust_remote_code=False)
 outputs = llm.generate(["The capital of France is"], SamplingParams(temperature=0.0, max_tokens=32))
 print(outputs[0].outputs[0].text)
 ```
+
+## SGLang
+
+Orthrus' autoregressive view is plain Qwen3: the released checkpoints even keep the `Qwen/Qwen3-*` backbone weights bit-for-bit, and the extra `*_diff` attention weights are only read in diffusion mode. So `orthrus_sglang.OrthrusLM` reuses SGLang's own `Qwen3ForCausalLM` (and with it SGLang's kernels, CUDA graphs and radix cache) and drops the diffusion-only weights at load time, saving ~350M params of GPU memory on the 1.7B checkpoint.
+
+```bash
+pip install sglang
+SGLANG_EXTERNAL_MODEL_PACKAGE=orthrus_sglang PYTHONPATH=src \
+    python -m sglang.launch_server --model-path chiennv/Orthrus-Qwen3-1.7B
+```
+
+`SGLANG_EXTERNAL_MODEL_PACKAGE` makes SGLang import every module in the package and register each `EntryClass` by class name (`OrthrusLM`, which is what the checkpoints' `architectures` field names). The server speaks the usual OpenAI API on port 30000. As with vLLM, this is the autoregressive path only.
+
+## Benchmark
+
+`benchmarks/modal_bench.py` serves `chiennv/Orthrus-Qwen3-1.7B` on SGLang and on vLLM (this repo's plugin), plus `Qwen/Qwen3-1.7B` on SGLang as a reference, one after another on the same Modal GPU, all driven by the same client (`sglang.bench_serving`, OpenAI `/v1/completions`, greedy, fixed output lengths). It also checks greedy output parity against the base Qwen3 model.
+
+```bash
+modal run benchmarks/modal_bench.py            # full matrix
+modal run benchmarks/modal_bench.py --quick    # smoke test
+```
+
+Results on one A10G (sglang 0.5.21, vllm 0.31.0, context length 4096, each engine's default memory settings; raw numbers in `benchmarks/results/a10g-20261020-112501.json`):
+
+| server | out tok/s c=1 | out tok/s c=8 | out tok/s c=32 | ShareGPT c=32 out tok/s | TPOT p50 c=32 (ms) | TTFT p50 c=32 (ms) |
+|---|---|---|---|---|---|---|
+| SGLang + Orthrus | 111 | 653 | 1321 | 1849 | 20.6 | 905 |
+| vLLM + Orthrus | 108 | 650 | 1324 | 1838 | 22.7 | 365 |
+| SGLang + Qwen3-1.7B (reference) | 111 | 651 | 1323 | 1849 | 20.6 | 905 |
+
+(c = max concurrency; the c=1/8/32 columns are random 1024-in / 256-out prompts.)
+
+- **SGLang serves Orthrus at zero overhead**: every metric matches base Qwen3-1.7B on SGLang within noise, and greedy outputs are identical on 8/8 prompts (expected, since the AR weights are the same).
+- **Throughput is a tie between engines.** SGLang has ~10% lower per-token decode latency at c=32. vLLM has much lower median TTFT on the random 1k-prompt runs (365 vs 905 ms at c=32), which is a scheduling-policy difference rather than anything Orthrus-specific; on ShareGPT, TTFT is close (43 vs 51 ms).
+- **Memory**: SGLang loads 3.28 GiB of weights (diffusion weights dropped) vs 3.87 GiB for the vLLM plugin, which keeps the `*_diff` weights resident. The KV cache sizes (108k vs 142k tokens) are not comparable, because the two engines' default memory fractions differ.
+- **vLLM greedy parity** vs the SGLang reference: 6/8 identical. The two misses diverge at a near-tie token (positions 23 and 4) and continue fluently. That looks like cross-engine bf16 kernel numerics, but this run didn't include vLLM + plain Qwen3, which is the run that would confirm it.
 
 ## Why this is a plugin, not a vLLM PR
 

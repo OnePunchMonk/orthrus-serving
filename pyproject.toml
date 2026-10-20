@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/OnePunchMonk/orthrus-vllm"
+Homepage = "https://github.com/OnePunchMonk/orthrus-serving"
 "Original model" = "https://github.com/chiennv2000/orthrus"
 "Paper" = "https://arxiv.org/abs/2605.12825"
 "Upstream vLLM PRs (closed, see README)" = "https://github.com/vllm-project/vllm/pull/44792"

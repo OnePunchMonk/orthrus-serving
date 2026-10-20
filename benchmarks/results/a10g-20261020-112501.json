@@ -1,0 +1,191 @@
+{
+  "gpu": "A10G",
+  "sglang": "0.5.21",
+  "vllm": "0.31.0",
+  "context_len": 4096,
+  "servers": {
+    "sglang-orthrus": {
+      "startup_s": 115.1,
+      "kv_cache_tokens": 108616.0,
+      "weights_gib": 3.28,
+      "parity": [
+        " Paris. The capital of Italy is Rome. The capital of Spain is Madrid. The capital of Portugal is Lisbon. The capital of Germany is Berlin. The capital of the United Kingdom is London. The capital of the United States is Washington, D.C. The capital of Canada is Ottawa. The capital of Mexico is Mexico",
+        "    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    else:\n        fib = [0, 1]\n        for i in range(2, n):\n            fib.append(fib",
+        " The sky appears blue due to the scattering of sunlight by the Earth's atmosphere. This scattering, known as Rayleigh scattering, causes shorter wavelengths of light (blue and violet) to travel in straighter paths than longer wavelengths, making the sky appear blue to our eyes. The sky appears blue due to the scattering of sunlight",
+        " fundamental principles that govern the behavior of energy in the universe. They are:\n\n1. The first law of thermodynamics, also known as the law of conservation of energy, states that energy cannot be created or destroyed, only transformed from one form to another. This means that the total amount of energy in a closed system remains",
+        " I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I",
+        " | 123\nOkay, I need to write a haiku about GPUs. Let me start by recalling what a haiku is. It's a traditional Japanese poem with three lines, syllable structure 5-7-5. So first line 5 syllables, second 7, third 5",
+        " 17 * 23 = 391\nThe question is a simple multiplication problem. The user is asking for the product of 17 and 23. To solve this, we can use the standard multiplication algorithm.\n\nFirst, we multiply 17 by 3, which is the units",
+        " there lived a young girl named Lina. She was known for her kindness and her love for the sea. Every morning, she would wake up and go for a walk along the beach, collecting shells and stones. She would sit on a rock and look out at the ocean, where the waves would crash and the sun"
+      ],
+      "benches": {
+        "random-1k-256-c1": {
+          "completed": 32,
+          "request_throughput": 0.43284399680058194,
+          "output_throughput": 110.80806318094898,
+          "total_throughput": 554.040315904745,
+          "median_ttft_ms": 59.3363600000032,
+          "p99_ttft_ms": 110.0751975900065,
+          "median_tpot_ms": 8.825255239215677,
+          "median_itl_ms": 8.814688999990494,
+          "median_e2e_latency_ms": 2310.449310999985
+        },
+        "random-1k-256-c8": {
+          "completed": 128,
+          "request_throughput": 2.5502027616516716,
+          "output_throughput": 652.8519069828279,
+          "total_throughput": 3264.2595349141397,
+          "median_ttft_ms": 284.36182850001046,
+          "p99_ttft_ms": 434.5129734599959,
+          "median_tpot_ms": 11.018478484313798,
+          "median_itl_ms": 10.977943999975537,
+          "median_e2e_latency_ms": 3230.35032650003
+        },
+        "random-1k-256-c32": {
+          "completed": 256,
+          "request_throughput": 5.158625054151591,
+          "output_throughput": 1320.6080138628072,
+          "total_throughput": 6603.040069314036,
+          "median_ttft_ms": 904.8288659999741,
+          "p99_ttft_ms": 1682.1825681499802,
+          "median_tpot_ms": 20.62585422156856,
+          "median_itl_ms": 17.81700850000334,
+          "median_e2e_latency_ms": 6214.888800500006
+        },
+        "sharegpt-c32": {
+          "completed": 400,
+          "request_throughput": 8.470883439263693,
+          "output_throughput": 1849.3632724600493,
+          "total_throughput": 4231.926303004551,
+          "median_ttft_ms": 43.22301549998997,
+          "p99_ttft_ms": 663.7276681200063,
+          "median_tpot_ms": 15.296712037910574,
+          "median_itl_ms": 12.628223000035632,
+          "median_e2e_latency_ms": 2812.7675835000045
+        }
+      }
+    },
+    "vllm-orthrus": {
+      "startup_s": 175.0,
+      "kv_cache_tokens": 141584.0,
+      "weights_gib": 3.87,
+      "parity": [
+        " Paris. The capital of the United States is Washington, D.C. The capital of the United Kingdom is London. The capital of the Russian Federation is Moscow. The capital of the People's Republic of China is Beijing. The capital of the Republic of China is Taipei. The capital of the Republic of Korea is Seoul.",
+        "    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    else:\n        fib = [0, 1]\n        for i in range(2, n):\n            fib.append(fib",
+        " The sky appears blue due to the scattering of sunlight by the Earth's atmosphere. This scattering, known as Rayleigh scattering, causes shorter wavelengths of light (blue and violet) to travel in straighter paths than longer wavelengths, making the sky appear blue to our eyes. The sky appears blue due to the scattering of sunlight",
+        " fundamental principles that govern the behavior of energy in the universe. They are:\n\n1. The first law of thermodynamics, also known as the law of conservation of energy, states that energy cannot be created or destroyed, only transformed from one form to another. This means that the total amount of energy in a closed system remains",
+        " I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I",
+        " | 17.1.2024\n\nThe GPU, a silicon beast,  \nCalculates with lightning speed,  \nPowerful in the digital realm.\nThe GPU, a silicon beast,  \nCalculates with lightning speed,  \nPowerful in the digital realm. \n\nWait, that's the same as",
+        " 17 * 23 = 391\nThe question is a simple multiplication problem. The user is asking for the product of 17 and 23. To solve this, we can use the standard multiplication algorithm.\n\nFirst, we multiply 17 by 3, which is the units",
+        " there lived a young girl named Lina. She was known for her kindness and her love for the sea. Every morning, she would wake up and go for a walk along the beach, collecting shells and stones. She would sit on a rock and look out at the ocean, where the waves would crash and the sun"
+      ],
+      "benches": {
+        "random-1k-256-c1": {
+          "completed": 32,
+          "request_throughput": 0.4218780899624356,
+          "output_throughput": 108.00079103038351,
+          "total_throughput": 540.0039551519176,
+          "median_ttft_ms": 54.35011200000872,
+          "p99_ttft_ms": 56.12875391996681,
+          "median_tpot_ms": 9.097206403921696,
+          "median_itl_ms": 9.07839699999613,
+          "median_e2e_latency_ms": 2374.1550940000025
+        },
+        "random-1k-256-c8": {
+          "completed": 128,
+          "request_throughput": 2.5403486026545368,
+          "output_throughput": 650.3292422795614,
+          "total_throughput": 3251.6462113978073,
+          "median_ttft_ms": 166.02383100001816,
+          "p99_ttft_ms": 305.43399142999436,
+          "median_tpot_ms": 12.01259683921575,
+          "median_itl_ms": 11.141820500029098,
+          "median_e2e_latency_ms": 3235.8381460000487
+        },
+        "random-1k-256-c32": {
+          "completed": 256,
+          "request_throughput": 5.171682209473787,
+          "output_throughput": 1323.9506456252896,
+          "total_throughput": 6619.753228126448,
+          "median_ttft_ms": 365.18058499996187,
+          "p99_ttft_ms": 1570.631660800011,
+          "median_tpot_ms": 22.706814211764645,
+          "median_itl_ms": 17.881597000041438,
+          "median_e2e_latency_ms": 6199.254325000027
+        },
+        "sharegpt-c32": {
+          "completed": 400,
+          "request_throughput": 8.416725649624633,
+          "output_throughput": 1837.5395438260498,
+          "total_throughput": 4204.869883667722,
+          "median_ttft_ms": 51.40955350003651,
+          "p99_ttft_ms": 614.1464015599604,
+          "median_tpot_ms": 15.419973723607944,
+          "median_itl_ms": 13.710034499979429,
+          "median_e2e_latency_ms": 2737.8360915000144
+        }
+      }
+    },
+    "sglang-qwen3": {
+      "startup_s": 65.0,
+      "kv_cache_tokens": 108616.0,
+      "weights_gib": 3.28,
+      "parity": [
+        " Paris. The capital of Italy is Rome. The capital of Spain is Madrid. The capital of Portugal is Lisbon. The capital of Germany is Berlin. The capital of the United Kingdom is London. The capital of the United States is Washington, D.C. The capital of Canada is Ottawa. The capital of Mexico is Mexico",
+        "    if n <= 0:\n        return []\n    elif n == 1:\n        return [0]\n    elif n == 2:\n        return [0, 1]\n    else:\n        fib = [0, 1]\n        for i in range(2, n):\n            fib.append(fib",
+        " The sky appears blue due to the scattering of sunlight by the Earth's atmosphere. This scattering, known as Rayleigh scattering, causes shorter wavelengths of light (blue and violet) to travel in straighter paths than longer wavelengths, making the sky appear blue to our eyes. The sky appears blue due to the scattering of sunlight",
+        " fundamental principles that govern the behavior of energy in the universe. They are:\n\n1. The first law of thermodynamics, also known as the law of conservation of energy, states that energy cannot be created or destroyed, only transformed from one form to another. This means that the total amount of energy in a closed system remains",
+        " I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I'm going to the park. I",
+        " | 123\nOkay, I need to write a haiku about GPUs. Let me start by recalling what a haiku is. It's a traditional Japanese poem with three lines, syllable structure 5-7-5. So first line 5 syllables, second 7, third 5",
+        " 17 * 23 = 391\nThe question is a simple multiplication problem. The user is asking for the product of 17 and 23. To solve this, we can use the standard multiplication algorithm.\n\nFirst, we multiply 17 by 3, which is the units",
+        " there lived a young girl named Lina. She was known for her kindness and her love for the sea. Every morning, she would wake up and go for a walk along the beach, collecting shells and stones. She would sit on a rock and look out at the ocean, where the waves would crash and the sun"
+      ],
+      "benches": {
+        "random-1k-256-c1": {
+          "completed": 32,
+          "request_throughput": 0.43258616678671874,
+          "output_throughput": 110.7420586974,
+          "total_throughput": 553.710293487,
+          "median_ttft_ms": 59.85386649990687,
+          "p99_ttft_ms": 73.14082305008925,
+          "median_tpot_ms": 8.832306825490164,
+          "median_itl_ms": 8.822676000136198,
+          "median_e2e_latency_ms": 2312.1797000000015
+        },
+        "random-1k-256-c8": {
+          "completed": 128,
+          "request_throughput": 2.5448513314775445,
+          "output_throughput": 651.4819408582514,
+          "total_throughput": 3257.409704291257,
+          "median_ttft_ms": 285.225717000003,
+          "p99_ttft_ms": 435.36865397000156,
+          "median_tpot_ms": 11.35969424117677,
+          "median_itl_ms": 10.984475999862298,
+          "median_e2e_latency_ms": 3236.00631350007
+        },
+        "random-1k-256-c32": {
+          "completed": 256,
+          "request_throughput": 5.166559772933162,
+          "output_throughput": 1322.6393018708895,
+          "total_throughput": 6613.196509354447,
+          "median_ttft_ms": 904.7386009999627,
+          "p99_ttft_ms": 1685.396626799968,
+          "median_tpot_ms": 20.605479803921472,
+          "median_itl_ms": 17.799600999865106,
+          "median_e2e_latency_ms": 6219.6173875000795
+        },
+        "sharegpt-c32": {
+          "completed": 400,
+          "request_throughput": 8.467794574897146,
+          "output_throughput": 1848.688911591545,
+          "total_throughput": 4230.383152699991,
+          "median_ttft_ms": 43.07124249987737,
+          "p99_ttft_ms": 660.0563946700549,
+          "median_tpot_ms": 15.286201429717213,
+          "median_itl_ms": 12.616025499937678,
+          "median_e2e_latency_ms": 2809.650278000049
+        }
+      }
+    }
+  }
+}
